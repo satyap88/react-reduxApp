@@ -1,28 +1,50 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
+import {connect} from 'react-redux';
+import {toggleTask} from './store';
+
 class App extends Component {
+  /*state = {
+    todos: [
+      {name: 'Task 1', completed: false},
+      {name: 'Task 2', completed: false},
+    ]
+  }
+
+  toggleTask = index => {
+    const tasks = [
+      ...this.state.todos.slice(0, index),
+      {
+        ...this.state.todos[index],
+        completed: !this.state.todos[index].completed
+      },
+      ...this.state.todos.slice(index + 1)
+    ];
+
+    this.setState({ todos: tasks })
+
+  }*/
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <ul>
+          {this.props.todos.map(
+            (task, i) => <li key = {i} onClick={() => {this.props.toggleTask(i)}} style={{ color: task.completed ? 'red' :'black' }}>
+            {task.name}</li>
+          )}
+        </ul>
       </div>
     );
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+    return {
+        //taskList: state.todos.taskList
+        ...state.taskList
+    }
+}
+
+export default connect(mapStateToProps, {toggleTask})(App);
